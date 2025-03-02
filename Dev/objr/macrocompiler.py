@@ -23,6 +23,9 @@ class ObjectiveRCompiler:
         # Handle use statements
         if line.startswith('#use'):
             self.output.append(self.handle_use(line))
+        # Handle framework statements
+        elif line.startswith('#framework'):
+            self.output.append(self.handle_framework(line))
         # Handle implementation
         elif line.startswith('implementaton'):
             self.output.append(self.handle_implementation(line))
@@ -45,6 +48,12 @@ class ObjectiveRCompiler:
         lib = re.findall(r'#use\s+"([^"]+)"', line)
         if lib:
             return f'use {lib[0]};'
+        return line
+
+    def handle_framework(self, line):
+        framework = re.findall(r'#framework\s+"([^"]+)"', line)
+        if framework:
+            return f'// Framework: {framework[0]}'
         return line
 
     def handle_implementation(self, line):
